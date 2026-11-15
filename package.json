@@ -1,0 +1,9 @@
+{
+  "name": "vertikal-doors",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Главная страница дверной мануфактуры «Вертикаль»",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}

@@ -1,0 +1,671 @@
+/* ============================================================
+   «Вертикаль» — дверная мануфактура
+   Палитра: штукатурка / сосна / латунь / чернила / дуб
+   Шрифты: Bodoni Moda (дисплей) + Manrope (текст)
+   ============================================================ */
+
+:root {
+  --plaster: #e7e2d5;
+  --bone: #f1ede2;
+  --ink: #26231b;
+  --ink-soft: rgba(38, 35, 27, 0.62);
+  --pine: #35402e;
+  --pine-deep: #2b3526;
+  --brass: #96703f;
+  --oak: #c8a67a;
+  --line: rgba(38, 35, 27, 0.16);
+  --line-light: rgba(241, 237, 226, 0.22);
+
+  --font-display: "Bodoni Moda", "Times New Roman", serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+
+  --pad: clamp(1.25rem, 4vw, 4rem);
+  --maxw: 1360px;
+  --ease-door: cubic-bezier(0.65, 0, 0.18, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--plaster);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+/* ---------- Кнопки и ссылки ---------- */
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.7rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bone);
+}
+.btn-primary:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: #fff;
+}
+
+.btn-header {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  background: transparent;
+  color: var(--ink);
+}
+.btn-header:hover {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.link-quiet {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-decoration-color: var(--brass);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+  text-decoration-skip-ink: none;
+  transition: color 0.2s ease;
+}
+.link-quiet:hover { color: var(--brass); }
+
+/* ---------- Шапка ---------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem var(--pad);
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.site-header.scrolled {
+  background: rgba(231, 226, 213, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  line-height: 1.1;
+  margin-right: auto;
+}
+
+.logo-name {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.logo-sub {
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.6rem;
+}
+
+.main-nav a {
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.main-nav a:hover {
+  border-bottom-color: var(--brass);
+  color: var(--brass);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  min-height: min(100vh, 1000px);
+  display: flex;
+  align-items: center;
+  padding: 7.5rem var(--pad) 4rem;
+  background:
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      var(--line) calc(25% - 1px),
+      var(--line) 25%
+    );
+}
+
+.hero-grid {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+
+.hero-note {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.6rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.9rem, 6.2vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.8rem;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.hero-lead {
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: 1.06rem;
+  margin-bottom: 2.2rem;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+}
+
+/* Дверная сцена */
+
+.hero-door {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.door-scene {
+  position: relative;
+  width: min(100%, 400px);
+  aspect-ratio: 2 / 3;
+  perspective: 1500px;
+  border: 10px solid var(--ink);
+  outline: 1px solid rgba(38, 35, 27, 0.35);
+  outline-offset: 6px;
+  background: var(--pine);
+  box-shadow: 18px 22px 0 rgba(38, 35, 27, 0.08);
+}
+
+.door-wall {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--bone);
+  background:
+    linear-gradient(180deg, rgba(43, 53, 38, 0.35), rgba(43, 53, 38, 0.78)),
+    url("assets/production.jpg") center 32% / cover no-repeat,
+    var(--pine);
+}
+
+.door-wall-text {
+  font-size: 1.02rem;
+  line-height: 1.55;
+  max-width: 26ch;
+}
+
+.door-wall-link {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-decoration-color: var(--oak);
+  text-underline-offset: 5px;
+  width: fit-content;
+}
+
+.door-leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 1.6s var(--ease-door);
+  border-right: 26px solid #6f5638; /* торец полотна */
+}
+
+.door-scene:hover .door-leaf,
+.door-scene:focus-within .door-leaf,
+.door-scene.is-open .door-leaf {
+  transform: rotateY(-100deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.face-front {
+  background-image: url("assets/hero-door.jpg");
+}
+
+.face-back {
+  transform: rotateY(180deg);
+  background:
+    linear-gradient(160deg, rgba(38, 35, 27, 0.25), rgba(38, 35, 27, 0.55)),
+    url("assets/hero-door.jpg");
+  filter: brightness(0.55) saturate(0.8);
+}
+
+.door-floor {
+  width: min(100%, 400px);
+  height: 26px;
+  margin-top: 14px;
+  background: radial-gradient(ellipse 62% 100% at 38% 20%, rgba(38, 35, 27, 0.4), rgba(38, 35, 27, 0.12) 55%, transparent 75%);
+  transition: transform 1.6s var(--ease-door), opacity 1.6s var(--ease-door);
+  transform-origin: left center;
+}
+
+.door-scene:hover .door-floor,
+.door-scene:focus-within .door-floor,
+.door-scene.is-open .door-floor {
+  transform: translateX(6%) scaleX(0.86);
+  opacity: 0.65;
+}
+
+.door-hint {
+  width: min(100%, 400px);
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ---------- Секции: общее ---------- */
+
+.section-head {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.section-title-light { color: var(--bone); }
+
+.section-note {
+  max-width: 34ch;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* ---------- Коллекции ---------- */
+
+.collections {
+  padding: 6.5rem 0 7rem;
+  background: var(--bone);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.collection-list {
+  list-style: none;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.collection-row { border-top: 1px solid var(--line); }
+.collection-row:last-child { border-bottom: 1px solid var(--line); }
+
+.collection-link {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem 0;
+  text-decoration: none;
+  transition: padding 0.35s var(--ease-door);
+}
+
+.collection-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 46ch;
+  padding-left: 0;
+  transition: padding-left 0.35s var(--ease-door);
+}
+
+.collection-row:hover .collection-link { padding-left: 1.2rem; }
+
+.collection-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.05;
+  transition: color 0.25s ease;
+}
+
+.collection-spec {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  max-width: 52ch;
+}
+
+.collection-price {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--brass);
+}
+
+.collection-media {
+  flex: 0 0 auto;
+  width: 130px;
+  overflow: hidden;
+  border-radius: 2px;
+  transition: width 0.45s var(--ease-door);
+}
+
+.collection-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 190px;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-door);
+}
+
+.collection-row:hover .collection-media { width: 230px; }
+.collection-row:hover .collection-media img { transform: scale(1.04); }
+
+/* ---------- Производство ---------- */
+
+.production {
+  background: var(--pine);
+  color: var(--bone);
+  padding: 7rem 0;
+}
+
+.production-grid {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: clamp(2.5rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.production-lead {
+  margin-top: 1.4rem;
+  color: rgba(241, 237, 226, 0.78);
+  max-width: 48ch;
+}
+
+.stats {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line-light);
+  border-left: 1px solid var(--line-light);
+}
+
+.stat {
+  padding: 1.4rem 1.4rem 1.6rem;
+  border-right: 1px solid var(--line-light);
+  border-bottom: 1px solid var(--line-light);
+}
+
+.stat dd {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--oak);
+  margin-bottom: 0.5rem;
+}
+
+.stat dt {
+  font-size: 0.85rem;
+  color: rgba(241, 237, 226, 0.7);
+  order: 2;
+}
+
+.stat { display: flex; flex-direction: column; }
+.stat dd { order: 1; }
+
+.production-media {
+  position: relative;
+}
+
+.production-media img {
+  width: 100%;
+  border-radius: 2px;
+}
+
+.production-media figcaption {
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+  color: rgba(241, 237, 226, 0.6);
+}
+
+/* ---------- Процесс ---------- */
+
+.process {
+  padding: 7rem 0;
+}
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.step {
+  border-top: 1px solid var(--ink);
+  padding-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--brass);
+}
+
+.step-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.step-text {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  max-width: 30ch;
+}
+
+/* ---------- Контакт ---------- */
+
+.contact {
+  background: var(--bone);
+  border-top: 1px solid var(--line);
+  padding: 6.5rem var(--pad);
+}
+
+.contact-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.2rem;
+}
+
+.contact-note {
+  color: var(--ink-soft);
+  margin-bottom: 2.2rem;
+}
+
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Подвал ---------- */
+
+.site-footer {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 4rem var(--pad) 2rem;
+}
+
+.footer-grid {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 1.4fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.footer-brand .logo-name {
+  font-size: 1.6rem;
+  color: var(--bone);
+}
+
+.footer-tag {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: rgba(241, 237, 226, 0.6);
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.footer-line {
+  font-size: 0.92rem;
+  color: rgba(241, 237, 226, 0.78);
+  text-decoration: none;
+}
+
+a.footer-line:hover { color: var(--oak); }
+
+.footer-legal {
+  max-width: var(--maxw);
+  margin: 1.6rem auto 0;
+  font-size: 0.8rem;
+  color: rgba(241, 237, 226, 0.45);
+}
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 1000px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .hero { padding-top: 6.5rem; }
+  .hero-door { order: 2; }
+  .production-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .main-nav { display: none; }
+}
+
+@media (max-width: 620px) {
+  .steps { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .collection-link { flex-direction: column-reverse; }
+  .collection-media { width: 100%; }
+  .collection-media img { min-height: 260px; }
+  .collection-row:hover .collection-media { width: 100%; }
+  .door-scene { box-shadow: 10px 12px 0 rgba(38, 35, 27, 0.08); }
+  .btn-header { display: none; }
+}
+
+/* ---------- Уменьшенная анимация ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .door-leaf, .door-floor, .collection-link, .collection-text,
+  .collection-media, .collection-media img, .btn, .link-quiet {
+    transition: none;
+  }
+}
